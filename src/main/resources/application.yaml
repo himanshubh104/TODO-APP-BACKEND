@@ -1,8 +1,11 @@
 server:
   servlet:
     context-path: /todo-app/
+#    session:
+#      cookie:
+#        secure: true
+      
   port: 8080
-
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/todo_app_db
@@ -10,14 +13,15 @@ spring:
     password: admin
   session:
     store-type: jdbc
-    jdbc:
-      initialize-schema: always
     timeout:
       seconds: 90
-
-      
-  
+    jdbc:
+      initialize-schema: always     
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
+      
+management:
+   security:
+      enabled: false

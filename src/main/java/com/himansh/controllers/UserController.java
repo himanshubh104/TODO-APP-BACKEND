@@ -50,7 +50,7 @@ public class UserController {
         fetchedUser.setUserPassword(null);
         fetchedUser.setTodos(null);
         fetchedUser.setAuthenticated(true);
-        ResponseCookie cookie =ResponseCookie.from("auth-token", token.toString())
+        ResponseCookie cookie =ResponseCookie.from("auth-token", token.toString())//.sameSite("None").secure(true)
         		.httpOnly(true).path("/todo-app/").build();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(fetchedUser);
     }
