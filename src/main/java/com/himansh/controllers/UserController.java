@@ -51,18 +51,18 @@ public class UserController {
         fetchedUser.setTodos(null);
         fetchedUser.setAuthenticated(true);
         ResponseCookie cookie =ResponseCookie.from("auth-token", token.toString())//.sameSite("None").secure(true)
-        		.httpOnly(true).path("/todo-app/").build();
+        		.httpOnly(false).path("/").build();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(fetchedUser);
     }
 
     @GetMapping(path = "/logout")
-    public boolean userLogout() throws TodoException{
+    public ResponseEntity<Boolean> userLogout() throws TodoException{
     	if(httpSession.getAttribute("auth-token")==null) {
     		throw new TodoException("Please Login first");
     	}
-    	//httpSession.removeAttribute("auth-token");
     	httpSession.invalidate();
-        return true;
+        ResponseCookie cookie =ResponseCookie.from("auth-token",null).path("/").maxAge(0).build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(true);
     }
 
     @PostMapping(path = "/create",consumes = {"application/json"},produces = "application/json")
@@ -70,7 +70,7 @@ public class UserController {
     	UserDTO fetchedUser=userService.createUser(user);
     	UUID token=UUID.randomUUID();
         ResponseCookie cookie =ResponseCookie.from("auth-token", token.toString())
-        		.httpOnly(true).path("/todo-app/").build();
+        		.httpOnly(false).path("/").build();
     	httpSession.setAttribute("auth-token", token.toString());
         httpSession.setAttribute("user-id", fetchedUser.getUserId()+"");
         

@@ -10,8 +10,10 @@ public class AppConfig {
 	 @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
-        cookieSerializer.setUseHttpOnlyCookie(true);
-        cookieSerializer.setSameSite(null);
+        cookieSerializer.setUseHttpOnlyCookie(false);
+//        cookieSerializer.setSameSite("None");
+//        cookieSerializer.setUseSecureCookie(true);
+        cookieSerializer.setCookiePath("/");
         return cookieSerializer;
     }
 }
