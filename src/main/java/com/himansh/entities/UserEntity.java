@@ -11,12 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-@Entity
-@Table(name = "user")
+@Entity(name = "user")
 @SequenceGenerator(name = "user_id_seq",initialValue = 100,allocationSize = 1)
 //@JsonIdentityInfo(property = "userId",
 //        generator = ObjectIdGenerators.PropertyGenerator.class)

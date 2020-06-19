@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "todo")
+@Entity(name = "todo")
 @SequenceGenerator(name = "todo_id_seq",initialValue = 100,allocationSize = 1)
 public class TodoEntity {
     @Id
