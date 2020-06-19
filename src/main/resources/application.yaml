@@ -1,6 +1,11 @@
 server:
   servlet:
     context-path: /todo-app/
+#  ssl:
+#    enabled: true
+#    key-store: classpath:localhost.p12
+#    key-store-type: PKCS12
+#    key-store-password: changeit
 #    session:
 #      cookie:
 #        secure: true
