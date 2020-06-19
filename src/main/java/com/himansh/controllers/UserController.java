@@ -55,6 +55,11 @@ public class UserController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(fetchedUser);
     }
 
+    @GetMapping(path = "/welcome")
+    public ResponseEntity<String> welcome(){
+    	return ResponseEntity.ok("Welcome User");
+    }
+    
     @GetMapping(path = "/logout")
     public ResponseEntity<Boolean> userLogout() throws TodoException{
     	if(httpSession.getAttribute("auth-token")==null) {
