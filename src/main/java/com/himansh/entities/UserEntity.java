@@ -16,16 +16,19 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity(name = "user")
 @SequenceGenerator(name = "user_id_seq",initialValue = 100,allocationSize = 1)
+//@JsonIdentityInfo(property = "userId",
+//        generator = ObjectIdGenerators.PropertyGenerator.class)
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "user_id_seq")
-    
+    @Column(name = "user_id")
     private int userId;
-    @Column(nullable = false,unique = true)
+    @Column(name = "user_name",nullable = false,unique = true)
     private String userName;
-    @Column(nullable = false)
+    @Column(name = "user_password",nullable = false)
     private String userPassword;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+    //@JoinColumn(name = "user_id")
     private List<TodoEntity> todos;
 
     @JsonManagedReference
