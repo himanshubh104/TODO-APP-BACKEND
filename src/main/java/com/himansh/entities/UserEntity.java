@@ -1,5 +1,6 @@
 package com.himansh.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,8 +19,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @SequenceGenerator(name = "user_id_seq",initialValue = 100,allocationSize = 1)
 //@JsonIdentityInfo(property = "userId",
 //        generator = ObjectIdGenerators.PropertyGenerator.class)
-public class UserEntity {
-    @Id
+public class UserEntity implements Serializable {
+	private static final long serialVersionUID = 1L;
+	@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "user_id_seq")
     @Column(name = "user_id")
     private int userId;

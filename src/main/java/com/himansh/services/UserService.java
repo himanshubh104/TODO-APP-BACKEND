@@ -1,22 +1,31 @@
 package com.himansh.services;
 
-import com.himansh.dto.UserDTO;
-import com.himansh.entities.UserEntity;
-import com.himansh.exceptions.TodoException;
-import com.himansh.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-public class UserService {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.himansh.configure.UserPrincipal;
+import com.himansh.dto.UserDTO;
+import com.himansh.entities.UserEntity;
+import com.himansh.exceptions.TodoException;
+import com.himansh.repository.UserRepository;
+
+@Service("userDetailsService")
+public class UserService implements UserDetailsService {
     @Autowired
     @Qualifier("userRepository")
     private UserRepository userRepo;
+    
+    @Autowired
+    private PasswordEncoder encoder; 
 
     public List<UserDTO> getUsers(){
         return userRepo.findAll().stream().map(UserDTO::valueOf).collect(Collectors.toList());
@@ -36,10 +45,11 @@ public class UserService {
             throw new TodoException("User already exists");
         }
         String pass=userDTO.getUserPassword();
-        pass=Base64.getEncoder().encodeToString(pass.getBytes());
+        pass=encoder.encode(pass);
         userDTO.setUserPassword(pass);
         return UserDTO.valueOf(userRepo.saveAndFlush(userDTO.toEntity()));
     }
+    
     //User Login
     public UserDTO userLogin(UserDTO userDTO) throws TodoException {
         UserEntity ue=userRepo.findByUserName(userDTO.getUserName());
@@ -54,4 +64,14 @@ public class UserService {
         }
         throw new TodoException("Wrong password");
     }
+    
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		UserEntity user=userRepo.findByUserName(username);
+		if (user==null) {
+			throw new UsernameNotFoundException("User Not Found");
+		}
+		return new UserPrincipal(user);
+	}
 }
