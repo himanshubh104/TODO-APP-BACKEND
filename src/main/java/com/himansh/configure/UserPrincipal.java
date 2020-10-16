@@ -18,6 +18,9 @@ public class UserPrincipal implements UserDetails {
 		super();
 		this.user = user;
 	}
+	public UserPrincipal() {
+		super();
+	}
 	
 	public int getUserId() {
 		return user.getUserId();

@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +24,7 @@ import com.himansh.services.TodoService;
 
 @RestController
 @RequestMapping(path = "todos")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class TodoController {
     @Autowired
     private TodoService todoService;   
@@ -32,11 +34,11 @@ public class TodoController {
     
 
     @ModelAttribute
-    public void kuchBhi() throws TodoException {
+    public void authentication() throws TodoException {
     	Object principal =SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	System.out.println("principal class: "+principal.getClass());
     	if (principal instanceof UserPrincipal) {
     		userId = ((UserPrincipal)principal).getUserId();
+    		System.out.println("User is: "+((UserPrincipal)principal).getUsername());
     		} 
     	else {
     		throw new TodoException("Access denied!");
@@ -53,12 +55,12 @@ public class TodoController {
 	 */
     
     @GetMapping(path = "/",produces = {"application/json"})
-    List<TodoDTO> getTodos() throws TodoException{
+    public List<TodoDTO> getTodos() throws TodoException{
         return todoService.getTodo(userId);
     }
 
     @PostMapping(path = "/", produces = {"application/json"})
-    TodoDTO createTodo(@Valid @RequestBody TodoDTO todoDTO) throws TodoException{
+    public TodoDTO createTodo(@Valid @RequestBody TodoDTO todoDTO) throws TodoException{
     	UserEntity ue=new UserEntity();
     	ue.setUserId(userId);
     	todoDTO.setUser(ue);
@@ -66,7 +68,7 @@ public class TodoController {
     }
 
     @PutMapping(path = "/", produces = {"application/json"})
-    TodoDTO updateTodo(@Valid @RequestBody TodoDTO todoDTO) throws TodoException {
+    public TodoDTO updateTodo(@Valid @RequestBody TodoDTO todoDTO) throws TodoException {
     	UserEntity ue=new UserEntity();
     	ue.setUserId(userId);
     	todoDTO.setUser(ue);
@@ -74,7 +76,7 @@ public class TodoController {
     }
 
     @DeleteMapping(path = "/",produces = {"application/json"})
-    String deleteTodos() throws TodoException {
+    public String deleteTodos() throws TodoException {
     	return todoService.deleteTodos(userId)?"Todo deleted Successfully.":"";
     }
 
