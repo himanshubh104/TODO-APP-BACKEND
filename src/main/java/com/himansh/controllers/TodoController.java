@@ -28,8 +28,6 @@ import com.himansh.services.TodoService;
 public class TodoController {
     @Autowired
     private TodoService todoService;   
-//    @Autowired
-//    private HttpSession httpSession;
     private int userId;
     
 
@@ -45,15 +43,7 @@ public class TodoController {
     	}
     }
     
-	/*
-	 * @ModelAttribute public void authentication(@CookieValue(name = "auth-token")
-	 * String token)throws TodoException {
-	 * 
-	 * String authToken=(String) httpSession.getAttribute("auth-token");
-	 * if(!authToken.equals(token)) { throw new TodoException("Access denied!"); }
-	 * userId=Integer.parseInt((String) httpSession.getAttribute("user-id")); }
-	 */
-    
+   
     @GetMapping(path = "/",produces = {"application/json"})
     public List<TodoDTO> getTodos() throws TodoException{
         return todoService.getTodo(userId);

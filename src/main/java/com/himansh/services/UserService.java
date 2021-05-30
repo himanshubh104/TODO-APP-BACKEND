@@ -50,14 +50,14 @@ public class UserService implements UserDetailsService {
         return UserDTO.valueOf(userRepo.saveAndFlush(userDTO.toEntity()));
     }
     
-    //User Login
-    public UserDTO userLogin(UserDTO userDTO) throws TodoException {
+    //User Login(Not In use)
+    private UserDTO userLogin(UserDTO userDTO) throws TodoException {
         UserEntity ue=userRepo.findByUserName(userDTO.getUserName());
         if (ue==null){
             throw new TodoException("User not found!");
         }
         else {
-//        	String pass=Base64.getDecoder().decode(ue.getUserPassword().getBytes()).toString();
+        	//String pass=Base64.getDecoder().decode(ue.getUserPassword().getBytes()).toString();
         	String pass=ue.getUserPassword();
             if (pass.equals(Base64.getEncoder().encodeToString(userDTO.getUserPassword().getBytes())))
                 return UserDTO.valueOf(ue);
