@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.Tuple;
+
 @Service
 public class TodoService {
     @Autowired
@@ -50,5 +52,15 @@ public class TodoService {
             throw new TodoException("Todo not found, Unable to delete");
         }
         return true;
+    }
+    
+    public void printAllTodos(Integer userId) {
+    	List<Tuple> todos = todoRepo.getTodoIdandBody(userId);
+    	for(Tuple todo: todos) {
+    		Integer id = todo.get("todo_id",Integer.class);
+    		String body = todo.get("todo_body",String.class);
+    		Boolean isDone = todo.get("is_done",Boolean.class);
+    		System.out.println("Todo: "+id+": "+body+": "+isDone);
+    	}
     }
 }

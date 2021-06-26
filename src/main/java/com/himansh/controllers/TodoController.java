@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +23,6 @@ import com.himansh.services.TodoService;
 
 @RestController
 @RequestMapping(path = "todos")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class TodoController {
     @Autowired
     private TodoService todoService;   
@@ -68,6 +66,12 @@ public class TodoController {
     @DeleteMapping(path = "/",produces = {"application/json"})
     public String deleteTodos() throws TodoException {
     	return todoService.deleteTodos(userId)?"Todo deleted Successfully.":"";
+    }
+    
+    @GetMapping(path = "/print-to-console")
+    public String printTodos() {
+    	todoService.printAllTodos(userId);
+    	return "Result is out, please look at your console.";
     }
 
 }

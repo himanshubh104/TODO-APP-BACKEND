@@ -17,3 +17,5 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+      
+cors-origin-source: http://localhost:3000
